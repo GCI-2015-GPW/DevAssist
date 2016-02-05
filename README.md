@@ -1,4 +1,9 @@
 # DevAssist
+
+![Build Status](https://travis-ci.org/DarkmatterVale/DevAssist.svg?branch=master)
+[![Code Climate](https://codeclimate.com/github/DarkmatterVale/regex4dummies/badges/gpa.svg)](https://codeclimate.com/github/DarkmatterVale/DevAssist)
+[![Issue Count](https://codeclimate.com/github/DarkmatterVale/DevAssist/badges/issue_count.svg)](https://codeclimate.com/github/DarkmatterVale/DevAssist)
+
 Your one and only developer assistant
 
 ## What is DevAssist?
@@ -23,7 +28,7 @@ None as of this moment...
 
 ## Getting started
 
-### Pip
+### Installing through Pip
 
 To install via pip:
 

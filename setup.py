@@ -55,7 +55,7 @@ setup(
     packages = find_packages(),
 
     platforms=["any"],
-    install_requires = [],
+    install_requires = ['nltk'],
 
     keywords = [ 'NLP', 'assistant', 'intelligent', 'AI' ],
 )

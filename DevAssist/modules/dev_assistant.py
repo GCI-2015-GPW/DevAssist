@@ -1,25 +1,20 @@
-from chatterbot.adapters.logic import LogicAdapter
-from chatterbot.conversation import Statement
-
-from chatterbot.utils.stop_words import StopWordsManager
-from chatterbot.utils.pos_tagger import POSTagger
+from DevAssist.utils.stop_words import StopWordsManager
+from DevAssist.utils.pos_tagger import POSTagger
 
 import subprocess
 import os
 import json
 
 
-class DeveloperAssistant(LogicAdapter):
+class ExtractImportantInformation():
     """
-    The DeveloperAssistant logic adapter provides a set of tools
-    that can help a developer program. Currently, only the following
-    features are supported:
-    1) Running Python programs
+    Extracts the important information from the incomind request from the
+    user. This includes:
+    - Name of program to run (or do other stuff for)
+    - Path to program
     """
 
     def __init__(self, **kwargs):
-        super(DeveloperAssistant, self).__init__(**kwargs)
-
         # Initializing variables
         self.program_data = { "name" : "", "path" : "" }
         self.stage = ""
@@ -38,12 +33,6 @@ class DeveloperAssistant(LogicAdapter):
         action to be used.
         """
         confidence = 0
-
-        # Getting the conversation
-        try:
-            self.conversation = self.context.conversation
-        except:
-            pass
 
         # Getting the stage of interaction with the user (assuming a command has not been executed)
         if self.stage is not "name path":
@@ -68,106 +57,6 @@ class DeveloperAssistant(LogicAdapter):
             return confidence, return_statement
 
         return 0, Statement("")
-
-    def read_program_file(self):
-        """
-        Read in the programs that have been run previously.
-        """
-        path = self.data_dir + "programs_run.json"
-        if os.path.exists(path):
-            with open(path, 'r') as data_file:
-                try:
-                    return json.load(data_file)
-                except:
-                    pass
-
-        empty_data = {
-            "programs_run": {
-            }
-        }
-
-        return empty_data
-
-    def write_program_file(self):
-        """
-        Write the programs that have been previously run.
-        """
-        path = self.data_dir + "programs_run.json"
-        with open(path, 'w') as data_file:
-            json.dump(self.data, data_file, sort_keys = True, indent = 4, ensure_ascii=False)
-
-    def update_data(self):
-        """
-        Update the data for the programs run.
-        """
-        most_recent_data = { self.program_data["name"] : self.program_data["path"] }
-        self.data["programs_run"].update(most_recent_data)
-        self.write_program_file()
-
-    def determine_stage_of_interaction(self, input_statement):
-        """
-        Determines at which point in the interaction with
-        the user chatterbot is.
-        """
-        confidence = 0
-
-        length = len(self.conversation)
-        if length == 0:
-            length = 1
-        else:
-            length += 1
-
-        # Parsing through the conversation with chatterbot looking for information
-        user_input = ""
-        for conversation_index in range(0, length):
-            if conversation_index == len(self.conversation):
-                user_input = input_statement.text
-            else:
-                user_input = self.conversation[conversation_index][0]
-
-            # Determining whether suggested path was asked
-            if "previously_used" in self.stage:
-                # @TODO: Replace the hardcoded "yes" with a call to a utility
-                #   function that determines if any word similar to (in this
-                #   case) "yes" is the text
-                if input_statement.text.lower() == "yes":
-                    self.stage = "name path"
-                    self.program_data["path"] = self.program_data["suggested_path"]
-
-                    return 1
-
-            # Getting name of program (if available)
-            extracted_name = self.extract_name(user_input)
-            if self.program_data["name"] is "":
-                if extracted_name is not "":
-                    self.program_data["name"] = extracted_name
-                    self.stage = "name"
-            elif self.program_data["name"] is not extracted_name and extracted_name is not "":
-                self.program_data["name"] = extracted_name
-                self.stage = "name"
-
-            # Getting path of program (if available)
-            extracted_path = self.extract_path(user_input)
-            if self.program_data["path"] is "":
-                if extracted_path is not "":
-                    self.program_data["path"] = extracted_path
-                    self.stage += " path"
-            elif self.program_data["path"] is not extracted_path and extracted_path is not "":
-                self.program_data["path"] = extracted_path
-                self.stage += " path"
-
-        if self.stage != "":
-            confidence = 1
-
-        if self.stage is not "name path":
-            # Read through the programs
-            for program in self.data["programs_run"]:
-                if self.program_data["name"] == program:
-                    # Use a suggested path if the program has been used before
-                    self.stage += " previously_used"
-                    self.program_data["suggested_path"] = self.data["programs_run"][program]
-
-        return confidence
 
     def extract_name(self, user_input):
         """

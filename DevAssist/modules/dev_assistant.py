@@ -8,7 +8,7 @@ import json
 
 class ExtractImportantInformation():
     """
-    Extracts the important information from the incomind request from the
+    Extracts the important information from the incoming request from the
     user. This includes:
     - Name of program to run (or do other stuff for)
     - Path to program

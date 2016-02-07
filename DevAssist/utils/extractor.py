@@ -17,46 +17,26 @@ class ExtractImportantInformation():
     def __init__(self, **kwargs):
         # Initializing variables
         self.program_data = { "name" : "", "path" : "" }
-        self.stage = ""
-        self.data_dir = ""
-        self.data = self.read_program_file()
 
         self.stopwords = StopWordsManager()
         self.tagger = POSTagger()
-        self.conversation = []
 
-    def process(self, statement):
+    def extract_program_information(self, user_input):
         """
-        Assuming the user inputed statement is a
-        request for the developer assistant, parse
-        the request and determine the appropriate
-        action to be used.
+        Assuming the user inputed statement is a request for the
+        developer assistant, parse the request and return the
+        important information.
         """
-        confidence = 0
+        # Resetting program_data
+        self.program_data["path"] = ""
+        self.program_data["name"] = ""
 
-        # Getting the stage of interaction with the user (assuming a command has not been executed)
-        if self.stage is not "name path":
-            self.data = self.read_program_file()
-            confidence = self.determine_stage_of_interaction(statement)
+        # Extracting important information from user_input
+        self.program_data["path"] = self.extract_path(user_input)
+        self.program_data["name"] = self.extract_name(user_input)
 
-        if self.stage is "name":
-            return confidence, Statement("What is the absolute path to " + self.program_data["name"] + "?")
-        elif "previously_used" in self.stage:
-            return confidence, Statement("Would you like to use the path " + self.program_data["suggested_path"] + "?")
-        elif "name path" in self.stage:
-            # Run program
-            subprocess.Popen("python " + self.program_data["path"] + self.program_data["name"], shell=True)
-            return_statement = Statement("Running " + self.program_data["name"] + "...")
-            self.update_data()
-
-            # Resetting global variables
-            self.program_data = { "name" : "", "path" : "" }
-            self.stage = ""
-
-            # Return a response
-            return confidence, return_statement
-
-        return 0, Statement("")
+        # Return the important information
+        return self.program_data["path"], self.program_data["name"]
 
     def extract_name(self, user_input):
         """

@@ -1,6 +1,7 @@
 from DevAssist import DevAssist
 
-my_jarvis = JARVIS()
+my_devassist = DevAssist()
+my_devassist.process("")
 
 while True:
     # @TODO: Normalize input from different versions of python
@@ -11,7 +12,7 @@ while True:
         exit(0)
 
     # Generate response
-    response = my_jarvis.process(user_input)
+    response = my_devassist.process(user_input)
 
     # Print response
     print response

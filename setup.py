@@ -8,6 +8,10 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'DESCRIPTION.rst')) as f:
     description_file = f.read()
 
+req = open('requirements.txt')
+requirements = req.readlines()
+req.close()
+
 setup(
     name = 'DevAssist',
 
@@ -55,7 +59,7 @@ setup(
     packages = find_packages(),
 
     platforms=["any"],
-    install_requires = ['nltk'],
+    install_requires = requirements,
 
     keywords = [ 'NLP', 'assistant', 'intelligent', 'AI' ],
 )

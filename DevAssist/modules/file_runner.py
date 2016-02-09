@@ -1,5 +1,7 @@
 from DevAssist.utils.extractor import ExtractImportantInformation
 
+import subprocess
+
 
 class FileRunner():
     """
@@ -27,4 +29,6 @@ class FileRunner():
         program_type = self.determine_program_type(path, name)
 
         # If the file is python, run it the specific way
+        # @TODO: Make it work without shell=True
         if program_type == "python":
+            subprocess.Popen("python " + self.path + self.name, shell=True)

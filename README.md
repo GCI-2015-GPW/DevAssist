@@ -6,6 +6,8 @@
 
 Your one and only developer assistant
 
+The language might change...Currently it is implemented in Python, but other versions might also be introduced.
+
 ## What is DevAssist?
 
 DevAssist is is your personal assistant during and after developing.

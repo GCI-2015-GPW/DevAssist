@@ -1,5 +1,7 @@
 # DevAssist
 
+[![Join the chat at https://gitter.im/GCI-2015-GPW/DevAssist](https://badges.gitter.im/GCI-2015-GPW/DevAssist.svg)](https://gitter.im/GCI-2015-GPW/DevAssist?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ![Build Status](https://travis-ci.org/DarkmatterVale/DevAssist.svg?branch=master)
 [![Code Climate](https://codeclimate.com/github/DarkmatterVale/regex4dummies/badges/gpa.svg)](https://codeclimate.com/github/DarkmatterVale/DevAssist)
 [![Issue Count](https://codeclimate.com/github/DarkmatterVale/DevAssist/badges/issue_count.svg)](https://codeclimate.com/github/DarkmatterVale/DevAssist)

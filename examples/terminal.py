@@ -1,11 +1,10 @@
 from DevAssist import DevAssist
+from DevAssist.utils.input_normalizer import input_function
 
 my_devassist = DevAssist()
-my_devassist.process("")
 
 while True:
-    # @TODO: Normalize input from different versions of python
-    user_input = raw_input("Human: ")
+    user_input = input_function()
 
     # Leave if the user is done
     if user_input == "quit":
@@ -15,4 +14,4 @@ while True:
     response = my_devassist.process(user_input)
 
     # Print response
-    print response
+    print(response)

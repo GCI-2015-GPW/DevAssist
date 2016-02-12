@@ -11,8 +11,12 @@ class ProcessInput():
     def __init__(self):
         pass
 
-    def process_input(self):
+    def process(self, user_input):
         """
         Process the incoming statement and decide which modules to use.
         """
-        pass
+        # @TODO: Find a way to process the input by going through every
+        #   module
+
+        # Return the generated response
+        return user_input

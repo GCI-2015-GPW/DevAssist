@@ -26,10 +26,6 @@ Want to help? All contributions are encouraged! Want to add a support for anothe
 
 Have an awesome idea but are not ready to contribute? Submit an issue on Github with the tag enhancement.
 
-## Examples:
-
-None as of this moment...
-
 ## Getting started
 
 ### Installing through Pip
@@ -38,6 +34,25 @@ To install via pip:
 
 ```
 pip install DevAssist
+```
+
+### Creating a custom implementation of DevAssist
+
+It is possible to create a custom implementation of DevAssist quite easily. This can be done by manipulating numerous arguments when creating a DevAssist object.
+
+#### Implementing speech recognition:
+
+To implement speech recognition, you will need to add the argument ```speech_adapter``` as an option to DevAssist. The possible recognition libraries you can use (at the moment) are:
+
+- recognize_sphinx
+
+Examples of implementation are:
+
+```
+# Using "recognize_sphinx"
+my_DevAssist = DevAssist(
+  speech_adapter="recognize_sphinx"
+)
 ```
 
 ## License

@@ -3,6 +3,9 @@ from multiprocessing import Queue
 
 
 class Speech():
+    """
+    Abstract wrapper for the speech functions used in DevAssist.
+    """
 
     def __init__(self, **options):
         self.recognizer = speech_recognition.Recognizer()
@@ -37,8 +40,6 @@ class Speech():
         """
         recognizer_function = getattr(recognizer, self.recognizer_function)
 
-        print("IN CALLBACK")
-
         try:
             result = recognizer_function(audio)
             self.queue.put(result)
@@ -67,7 +68,5 @@ class SpeechDriver():
         """
         Return the queue (which is the generated audio)
         """
-        print("PRINTING QUEUE")
         print( str(self.connection.queue.get()) )
-        print("PRINTED QUEUE")
         return self.connection.queue.get()

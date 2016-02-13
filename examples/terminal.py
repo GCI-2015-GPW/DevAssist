@@ -1,7 +1,12 @@
 from DevAssist import DevAssist
 from DevAssist.utils.input_normalizer import input_function
 
-my_devassist = DevAssist()
+my_devassist = DevAssist(
+    modules=[
+        "DevAssist.modules.file_runner.FileRunner",
+        "DevAssist.modules.run_tests.TestRunner"
+    ]
+)
 
 while True:
     user_input = input_function()

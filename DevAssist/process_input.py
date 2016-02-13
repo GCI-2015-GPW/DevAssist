@@ -1,5 +1,3 @@
-from DevAssist.modules.file_runner import FileRunner
-from DevAssist.modules.run_tests import RunTests
 
 
 class ProcessInput():
@@ -9,14 +7,27 @@ class ProcessInput():
     """
 
     def __init__(self):
-        pass
+        self.modules = []
+
+    def add_module(self, adapter):
+        """
+        Add a module to DevAssist
+        """
+        self.modules.append(adapter)
 
     def process(self, user_input):
         """
         Process the incoming statement and decide which modules to use.
         """
-        # @TODO: Find a way to process the input by going through every
-        #   module
+        response = ""
+        confidence = -1
+
+        for my_module in self.modules:
+            test_response, test_confidence = my_module.process(user_input)
+
+            if test_confidence > confidence:
+                response = test_response
+                confidence = test_confidence
 
         # Return the generated response
-        return user_input
+        return response

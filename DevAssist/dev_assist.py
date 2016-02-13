@@ -1,5 +1,6 @@
 from DevAssist.speech import Speech, SpeechDriver
 from DevAssist.process_input import ProcessInput
+from DevAssist.utils.module_loading import import_module
 
 
 class DevAssist():
@@ -11,6 +12,10 @@ class DevAssist():
         """
         Set up instance of DevAssist
         """
+        # Setting up variables
+        self.input_processor = ProcessInput()
+        self.conversation = []
+
         # Parsing options
         if kwargs.get("speech_adapter") is not None:
             self.speech = Speech(**kwargs)
@@ -19,9 +24,13 @@ class DevAssist():
         else:
             self.speech_driver = None
 
-        self.input_processor = ProcessInput()
+        modules = kwargs.get("modules", [
+            "DevAssist.modules.file_runner.FileRunner",
+            "DevAssist.modules.run_tests.TestRunner"
+        ])
 
-        self.conversation = []
+        for my_module in modules:
+            self.add_adapter(my_module, **kwargs)
 
     def process(self, user_input):
         """
@@ -40,3 +49,12 @@ class DevAssist():
 
         # Return the generated response
         return response
+
+    def add_adapter(self, my_module, **kwargs):
+        """
+        Add the specified module into DevAssist.
+        """
+        NewAdapter = import_module(my_module)
+        adapter = NewAdapter(**kwargs)
+
+        self.input_processor.add_module(adapter)

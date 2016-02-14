@@ -65,6 +65,31 @@ class FileRunner(Module):
 
         return "", 0
 
+    def should_process(self, user_input):
+        """
+        Returns a 0 or 1 depending on whether the module should respond to
+        the user's input (0 means the module should not respond, 1 means it
+        should).
+
+        This method looks at multiple different factors to determine whether
+        it should respond to what the user asks. These factors include:
+        - Previous conversation : By looking at previous conversation,
+            the method can identify important data that is required to run
+            the module. If that data is not present, then it is clear that
+            the module should not respond to the incoming statement
+        - Flags: By looking at the flags previously created, the method can
+            determine whether or not a request is currently in process
+        """
+        # If no conversation is in progress, then we will need to parse
+        #   the user's input to determine whether the module needs to
+        #   respond
+        if self.flags is []:
+            return 1
+
+        # Currently there are no false positives that should stop this module
+        #   from running
+        return 1
+
     def run_program(self):
         """
         Run the program at the location of self.program_data["path"] with the

@@ -44,11 +44,11 @@ class FileRunner(Module):
             self.data = self.read_program_file()
             confidence = self.determine_stage_of_interaction(statement)
 
-        if ' '.join(self.flags) is "name":
+        if ' '.join(self.flags) is "name" or "ignore_previously_used" in ' '.join(self.flags):
             return "What is the absolute path to " + self.program_data["name"] + "?", confidence
         elif "previously_used" in ' '.join(self.flags):
             return "Would you like to use the path " + self.program_data["suggested_path"] + "?", confidence
-        elif "name path" ' '.join(self.flags):
+        elif "name path" in ' '.join(self.flags):
             # Run program
             self.run_program()
 
@@ -154,6 +154,12 @@ class FileRunner(Module):
         else:
             length += 1
 
+        # Going through flags and setting appropriate temporary variables
+        ignore_previously_used = False
+        for flag in self.flags:
+            if "ignore_previously_used" in flag:
+                ignore_previously_used = True
+
         # Parsing through the conversation with chatterbot looking for information
         user_input = ""
         for conversation_index in range(0, length):
@@ -173,7 +179,7 @@ class FileRunner(Module):
 
                     return 1
                 elif input_statement.lower() == "no":
-                    self.flags = ["name"]
+                    self.flags = ["name", "ignore_previously_used"]
 
                     return 1
 
@@ -203,7 +209,7 @@ class FileRunner(Module):
         if ' '.join(self.flags) is not "name path":
             # Read through the programs
             for program in self.data["programs_run"]:
-                if self.program_data["name"] == program:
+                if self.program_data["name"] == program and ignore_previously_used == False:
                     # Use a suggested path if the program has been used before
                     self.flags.append("previously_used")
                     self.program_data["suggested_path"] = self.data["programs_run"][program]

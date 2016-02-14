@@ -11,3 +11,9 @@ class Module():
         Returns the processed output from the input.
         """
         raise ModuleNotImplemented()
+
+    def set_context(self, context):
+        """
+        Set the module's context
+        """
+        self.context = context

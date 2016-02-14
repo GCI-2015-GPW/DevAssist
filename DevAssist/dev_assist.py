@@ -32,6 +32,8 @@ class DevAssist():
         for my_module in modules:
             self.add_adapter(my_module, **kwargs)
 
+        self.input_processor.set_context(self)
+
     def process(self, user_input):
         """
         Process input & generate a response.

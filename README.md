@@ -55,6 +55,25 @@ my_DevAssist = DevAssist(
 )
 ```
 
+#### Implementing different modules
+
+It is possible to implement only specific modules. Each module accomplishes a unique task. The FileRunner module, for example, allows the user to run files. To pick only specific modules, change the ```modules``` argument passed to DevAssist(), like in the following example:
+
+```
+# Using all of the current built-in modules
+my_DevAssist = DevAssist(
+  modules=[
+    "DevAssist.modules.file_runner.FileRunner",
+    "DevAssist.modules.run_tests.TestRunner"
+  ]
+)
+```
+
+The current list of available modules:
+
+- FileRunner : This module allows DevAssist to run files
+- TestRunner : This module gives DevAssist the ability to run project tests and report back the results.
+
 ## License
 
 DevAssist is provided under the MIT license

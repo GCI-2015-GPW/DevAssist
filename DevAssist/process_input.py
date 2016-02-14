@@ -19,15 +19,16 @@ class ProcessInput():
         """
         Process the incoming statement and decide which modules to use.
         """
-        response = ""
+        response = "I apologize, but I did not understand the request."
         confidence = -1
 
         for my_module in self.modules:
-            test_response, test_confidence = my_module.process(user_input)
+            if my_module.should_process(user_input):
+                test_response, test_confidence = my_module.process(user_input)
 
-            if test_confidence > confidence:
-                response = test_response
-                confidence = test_confidence
+                if test_confidence > confidence and test_confidence != 0:
+                    response = test_response
+                    confidence = test_confidence
 
         # Return the generated response
         return response

@@ -16,7 +16,7 @@ class FileRunner(Module):
     def __init__(self, **kwargs):
         # Initializing variables
         self.program_data = { "name" : "", "path" : "" }
-        self.stage = ""
+        self.flags = []
         self.data_dir = "generated_data"
         self.data = self.read_program_file()
 
@@ -40,15 +40,15 @@ class FileRunner(Module):
             pass
 
         # Getting the stage of interaction with the user (assuming a command has not been executed)
-        if self.stage is not "name path":
+        if ' '.join(self.flags) is not "name path":
             self.data = self.read_program_file()
             confidence = self.determine_stage_of_interaction(statement)
 
-        if self.stage is "name":
+        if ' '.join(self.flags) is "name":
             return "What is the absolute path to " + self.program_data["name"] + "?", confidence
-        elif "previously_used" in self.stage:
+        elif "previously_used" in ' '.join(self.flags):
             return "Would you like to use the path " + self.program_data["suggested_path"] + "?", confidence
-        elif "name path" in self.stage:
+        elif "name path" ' '.join(self.flags):
             # Run program
             self.run_program()
 
@@ -58,7 +58,7 @@ class FileRunner(Module):
 
             # Resetting global variables
             self.program_data = { "name" : "", "path" : "" }
-            self.stage = ""
+            self.flags = []
 
             # Return a response
             return return_statement, confidence
@@ -138,13 +138,17 @@ class FileRunner(Module):
                 user_input = self.conversation[conversation_index][0]
 
             # Determining whether suggested path was asked
-            if "previously_used" in self.stage:
+            if "previously_used" in ' '.join(self.flags):
                 # @TODO: Replace the hardcoded "yes" with a call to a utility
                 #   function that determines if any word similar to (in this
                 #   case) "yes" is the text
                 if input_statement.lower() == "yes":
-                    self.stage = "name path"
+                    self.flags = ["name", "path"]
                     self.program_data["path"] = self.program_data["suggested_path"]
+
+                    return 1
+                elif input_statement.lower() == "no":
+                    self.flags = ["name"]
 
                     return 1
 
@@ -153,30 +157,30 @@ class FileRunner(Module):
             if self.program_data["name"] is "":
                 if extracted_name is not "":
                     self.program_data["name"] = extracted_name
-                    self.stage = "name"
+                    self.flags = ["name"]
             elif self.program_data["name"] is not extracted_name and extracted_name is not "":
                 self.program_data["name"] = extracted_name
-                self.stage = "name"
+                self.flags = ["name"]
 
             # Getting path of program (if available)
             extracted_path = self.extract_path(user_input)
             if self.program_data["path"] is "":
                 if extracted_path is not "":
                     self.program_data["path"] = extracted_path
-                    self.stage += " path"
+                    self.flags.append("path")
             elif self.program_data["path"] is not extracted_path and extracted_path is not "":
                 self.program_data["path"] = extracted_path
-                self.stage += " path"
+                self.flags.append("path")
 
-        if self.stage != "":
+        if ' '.join(self.flags) != "":
             confidence = 1
 
-        if self.stage is not "name path":
+        if ' '.join(self.flags) is not "name path":
             # Read through the programs
             for program in self.data["programs_run"]:
                 if self.program_data["name"] == program:
                     # Use a suggested path if the program has been used before
-                    self.stage += " previously_used"
+                    self.flags.append("previously_used")
                     self.program_data["suggested_path"] = self.data["programs_run"][program]
 
         return confidence

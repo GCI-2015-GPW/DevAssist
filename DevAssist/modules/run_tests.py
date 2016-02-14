@@ -1,4 +1,3 @@
-from DevAssist.utils.extractor import ExtractImportantInformation
 from DevAssist.modules.module import Module
 
 
@@ -12,8 +11,6 @@ class TestRunner(Module):
     def __init__(self, **kwargs):
         self.testing_suite = "nose"
         self.test_path = ""
-
-        self.extractor = ExtractImportantInformation()
 
     def process(self, user_input):
         """

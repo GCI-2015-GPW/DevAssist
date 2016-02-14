@@ -31,3 +31,11 @@ class ProcessInput():
 
         # Return the generated response
         return response
+
+    def set_context(self, context):
+        """
+        Set the context for each of the contained modules.
+        """
+
+        for my_module in self.modules:
+            my_module.set_context(context)

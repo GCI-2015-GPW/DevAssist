@@ -32,6 +32,13 @@ def install_dependencies():
         pyaudio = subprocess.Popen(["pip install pyaudio"], shell=True)
         pyaudio.communicate()
         print("\npyaudio has been installed...")
+
+        # Installing pocketsphinx
+        # @TODO: Rewrite to not use shell=True
+        print("Installing pocketsphinx...\n")
+        pocketsphinx = subprocess.Popen(["pip install pocketsphinx"], shell=True)
+        pocketsphinx.communicate()
+        print("\nFinished installing pocketsphinx...")
     elif host_platform == "Linux":
         # Installing dependencies for portaudio
         # @TODO: Rewrite to not use shell=True
@@ -46,6 +53,13 @@ def install_dependencies():
         pyaudio = subprocess.Popen(["pip install --global-option='build_ext' --global-option='-I/usr/local/include' --global-option='-L/usr/local/lib' pyaudio"], shell=True)
         pyaudio.communicate()
         print("\npyaudio has been installed...")
+
+        # Installing pocketsphinx
+        # @TODO: Rewrite to not use shell=True
+        print("Installing pocketsphinx...\n")
+        pocketsphinx = subprocess.Popen(["pip install pocketsphinx"], shell=True)
+        pocketsphinx.communicate()
+        print("\nFinished installing pocketsphinx...")
 
 if __name__ == "__main__":
     install_dependencies()

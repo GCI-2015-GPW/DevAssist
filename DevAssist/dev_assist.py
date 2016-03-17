@@ -2,6 +2,9 @@ from DevAssist.speech import Speech, SpeechDriver
 from DevAssist.process_input import ProcessInput
 from DevAssist.utils.module_loading import import_module
 
+import json
+import os
+
 
 class DevAssist():
     """
@@ -33,6 +36,13 @@ class DevAssist():
             self.add_adapter(my_module, **kwargs)
 
         self.input_processor.set_context(self)
+
+        # Initializing data directory
+        self.data_directory = kwargs.get("data_directory", "generated_data")
+        data_path = os.path.join(self.data_directory, "conversations.json")
+        if not os.path.exists(data_path):
+            with open(data_path, 'w') as data_file:
+                json.dump({}, data_file, sort_keys=True, indent=4, ensure_ascii=False)
 
     def process(self, user_input):
         """
